@@ -9,7 +9,9 @@ interface AuthResult {
   profile: Profile;
 }
 
-export async function authenticateRequest(request: Request): Promise<AuthResult | null> {
+export async function authenticateRequest(
+  request: Request,
+): Promise<AuthResult | null> {
   const authHeader = request.headers.get('authorization');
   if (!authHeader?.startsWith('Bearer ')) {
     return null;

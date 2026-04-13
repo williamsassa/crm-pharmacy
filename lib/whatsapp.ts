@@ -12,7 +12,7 @@ export function generateWhatsAppUrl(
 
   const encodedMessage = encodeURIComponent(message.trim());
 
-  return `https://wa.me/${formattedPhone}?text=${encodedMessage}`;
+  return `whatsapp://send?phone=${formattedPhone}&text=${encodedMessage}`;
 }
 
 export function generateCustomWhatsAppUrl(
@@ -25,5 +25,5 @@ export function generateCustomWhatsAppUrl(
     : cleanPhone;
   const encodedMessage = encodeURIComponent(message);
 
-  return `https://wa.me/${formattedPhone}?text=${encodedMessage}`;
+  return `whatsapp://send?phone=${formattedPhone}&text=${encodedMessage}`;
 }

@@ -278,7 +278,7 @@ export default function PatientForm({ onSuccess }: PatientFormProps) {
             placeholder="+33 6 12 34 56 78"
             value={phone}
             onChange={(e) => handlePhoneChange(e.target.value)}
-            className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-white text-lg font-medium text-pharma-text placeholder:text-pharma-text-secondary/40 focus:outline-none focus:border-pharma-green focus:ring-0 transition-all duration-300"
+            className="w-full h-11 px-5 rounded-xl border-2 border-gray-200 bg-white text-lg font-medium text-pharma-text placeholder:text-pharma-text-secondary/40 focus:outline-none focus:border-pharma-green focus:ring-0 transition-all duration-300"
           />
         </motion.div>
         <AnimatePresence>

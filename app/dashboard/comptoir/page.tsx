@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRequireAuth } from '@/hooks/useAuth';
-import { createSupabaseClient } from '@/lib/supabase/client';
 import PatientForm from '@/components/comptoir/PatientForm';
 import TopBar from '@/components/layout/TopBar';
 import Spinner from '@/components/ui/Spinner';
+import { useRequireAuth } from '@/hooks/useAuth';
+import { createSupabaseClient } from '@/lib/supabase/client';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useCallback, useEffect, useState } from 'react';
 
 function PharmaCross({ className }: { className?: string }) {
   return (
@@ -44,7 +44,14 @@ function Pharma3DBackground() {
   // Pharmacy crosses (3 items)
   const crosses = [
     { id: 'cross-0', left: 22, delay: 4, duration: 26, size: 28, rotSpeed: 14 },
-    { id: 'cross-1', left: 55, delay: 10, duration: 22, size: 24, rotSpeed: 16 },
+    {
+      id: 'cross-1',
+      left: 55,
+      delay: 10,
+      duration: 22,
+      size: 24,
+      rotSpeed: 16,
+    },
     { id: 'cross-2', left: 75, delay: 1, duration: 30, size: 32, rotSpeed: 12 },
   ];
 
@@ -64,7 +71,10 @@ function Pharma3DBackground() {
   ];
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ perspective: '1200px' }}>
+    <div
+      className="absolute inset-0 overflow-hidden pointer-events-none"
+      style={{ perspective: '1200px' }}
+    >
       <style jsx>{`
         @keyframes pharma-float {
           0% {
@@ -84,47 +94,95 @@ function Pharma3DBackground() {
         }
 
         @keyframes pharma-spin-1 {
-          0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-          100% { transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg); }
+          0% {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+          }
+          100% {
+            transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg);
+          }
         }
 
         @keyframes pharma-spin-2 {
-          0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-          100% { transform: rotateX(-180deg) rotateY(360deg) rotateZ(-120deg); }
+          0% {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+          }
+          100% {
+            transform: rotateX(-180deg) rotateY(360deg) rotateZ(-120deg);
+          }
         }
 
         @keyframes pharma-spin-3 {
-          0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-          100% { transform: rotateX(120deg) rotateY(-360deg) rotateZ(180deg); }
+          0% {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+          }
+          100% {
+            transform: rotateX(120deg) rotateY(-360deg) rotateZ(180deg);
+          }
         }
 
         @keyframes pharma-sway {
-          0%, 100% { transform: translateX(0px); }
-          25% { transform: translateX(15px); }
-          75% { transform: translateX(-15px); }
+          0%,
+          100% {
+            transform: translateX(0px);
+          }
+          25% {
+            transform: translateX(15px);
+          }
+          75% {
+            transform: translateX(-15px);
+          }
         }
 
         @keyframes dna-helix-a {
-          0% { transform: translateX(0px) rotateY(0deg); }
-          25% { transform: translateX(12px) rotateY(90deg); }
-          50% { transform: translateX(0px) rotateY(180deg); }
-          75% { transform: translateX(-12px) rotateY(270deg); }
-          100% { transform: translateX(0px) rotateY(360deg); }
+          0% {
+            transform: translateX(0px) rotateY(0deg);
+          }
+          25% {
+            transform: translateX(12px) rotateY(90deg);
+          }
+          50% {
+            transform: translateX(0px) rotateY(180deg);
+          }
+          75% {
+            transform: translateX(-12px) rotateY(270deg);
+          }
+          100% {
+            transform: translateX(0px) rotateY(360deg);
+          }
         }
 
         @keyframes dna-helix-b {
-          0% { transform: translateX(0px) rotateY(180deg); }
-          25% { transform: translateX(-12px) rotateY(270deg); }
-          50% { transform: translateX(0px) rotateY(360deg); }
-          75% { transform: translateX(12px) rotateY(450deg); }
-          100% { transform: translateX(0px) rotateY(540deg); }
+          0% {
+            transform: translateX(0px) rotateY(180deg);
+          }
+          25% {
+            transform: translateX(-12px) rotateY(270deg);
+          }
+          50% {
+            transform: translateX(0px) rotateY(360deg);
+          }
+          75% {
+            transform: translateX(12px) rotateY(450deg);
+          }
+          100% {
+            transform: translateX(0px) rotateY(540deg);
+          }
         }
 
         @keyframes bubble-wobble {
-          0%, 100% { transform: scale(1) rotateZ(0deg); }
-          25% { transform: scale(1.1) rotateZ(5deg); }
-          50% { transform: scale(0.95) rotateZ(-3deg); }
-          75% { transform: scale(1.05) rotateZ(2deg); }
+          0%,
+          100% {
+            transform: scale(1) rotateZ(0deg);
+          }
+          25% {
+            transform: scale(1.1) rotateZ(5deg);
+          }
+          50% {
+            transform: scale(0.95) rotateZ(-3deg);
+          }
+          75% {
+            transform: scale(1.05) rotateZ(2deg);
+          }
         }
 
         .pharma-element {
@@ -155,11 +213,46 @@ function Pharma3DBackground() {
               opacity: 0.08 + (p.size % 5) * 0.015,
             }}
           >
-            <svg width={p.size} height={p.size * 0.55} viewBox="0 0 60 33" fill="none">
-              <rect x="1" y="1" width="58" height="31" rx="15.5" stroke="#2D6A4F" strokeWidth="1.5" fill="none" />
-              <rect x="1" y="1" width="29" height="31" rx="15.5" fill="#52B788" />
-              <rect x="30" y="1" width="29" height="31" rx="15.5" fill="#40916C" />
-              <line x1="30" y1="1" x2="30" y2="32" stroke="#2D6A4F" strokeWidth="0.8" />
+            <svg
+              width={p.size}
+              height={p.size * 0.55}
+              viewBox="0 0 60 33"
+              fill="none"
+            >
+              <rect
+                x="1"
+                y="1"
+                width="58"
+                height="31"
+                rx="15.5"
+                stroke="#2D6A4F"
+                strokeWidth="1.5"
+                fill="none"
+              />
+              <rect
+                x="1"
+                y="1"
+                width="29"
+                height="31"
+                rx="15.5"
+                fill="#52B788"
+              />
+              <rect
+                x="30"
+                y="1"
+                width="29"
+                height="31"
+                rx="15.5"
+                fill="#40916C"
+              />
+              <line
+                x1="30"
+                y1="1"
+                x2="30"
+                y2="32"
+                stroke="#2D6A4F"
+                strokeWidth="0.8"
+              />
             </svg>
           </div>
         </div>
@@ -191,9 +284,30 @@ function Pharma3DBackground() {
                 fill="none"
               />
               {/* Inner connections */}
-              <line x1="30" y1="5" x2="30" y2="55" stroke="#52B788" strokeWidth="0.6" />
-              <line x1="8" y1="17" x2="52" y2="42" stroke="#52B788" strokeWidth="0.6" />
-              <line x1="52" y1="17" x2="8" y2="42" stroke="#52B788" strokeWidth="0.6" />
+              <line
+                x1="30"
+                y1="5"
+                x2="30"
+                y2="55"
+                stroke="#52B788"
+                strokeWidth="0.6"
+              />
+              <line
+                x1="8"
+                y1="17"
+                x2="52"
+                y2="42"
+                stroke="#52B788"
+                strokeWidth="0.6"
+              />
+              <line
+                x1="52"
+                y1="17"
+                x2="8"
+                y2="42"
+                stroke="#52B788"
+                strokeWidth="0.6"
+              />
               {/* Vertex dots */}
               <circle cx="30" cy="5" r="2.5" fill="#40916C" />
               <circle cx="52" cy="17" r="2.5" fill="#40916C" />
@@ -203,9 +317,30 @@ function Pharma3DBackground() {
               <circle cx="8" cy="17" r="2.5" fill="#40916C" />
               <circle cx="30" cy="30" r="3" fill="#2D6A4F" />
               {/* Branch lines */}
-              <line x1="30" y1="5" x2="30" y2="-5" stroke="#40916C" strokeWidth="0.8" />
-              <line x1="52" y1="17" x2="60" y2="12" stroke="#40916C" strokeWidth="0.8" />
-              <line x1="8" y1="42" x2="0" y2="48" stroke="#40916C" strokeWidth="0.8" />
+              <line
+                x1="30"
+                y1="5"
+                x2="30"
+                y2="-5"
+                stroke="#40916C"
+                strokeWidth="0.8"
+              />
+              <line
+                x1="52"
+                y1="17"
+                x2="60"
+                y2="12"
+                stroke="#40916C"
+                strokeWidth="0.8"
+              />
+              <line
+                x1="8"
+                y1="42"
+                x2="0"
+                y2="48"
+                stroke="#40916C"
+                strokeWidth="0.8"
+              />
               <circle cx="30" cy="-5" r="1.8" fill="#52B788" />
               <circle cx="60" cy="12" r="1.8" fill="#52B788" />
               <circle cx="0" cy="48" r="1.8" fill="#52B788" />
@@ -234,8 +369,22 @@ function Pharma3DBackground() {
             <svg width={c.size} height={c.size} viewBox="0 0 40 40" fill="none">
               <rect x="14" y="2" width="12" height="36" rx="3" fill="#52B788" />
               <rect x="2" y="14" width="36" height="12" rx="3" fill="#52B788" />
-              <rect x="15" y="3" width="10" height="34" rx="2.5" fill="#40916C" />
-              <rect x="3" y="15" width="34" height="10" rx="2.5" fill="#40916C" />
+              <rect
+                x="15"
+                y="3"
+                width="10"
+                height="34"
+                rx="2.5"
+                fill="#40916C"
+              />
+              <rect
+                x="3"
+                y="15"
+                width="34"
+                height="10"
+                rx="2.5"
+                fill="#40916C"
+              />
             </svg>
           </div>
         </div>
@@ -252,7 +401,12 @@ function Pharma3DBackground() {
             opacity: 0.08,
           }}
         >
-          <svg width={d.size * 0.5} height={d.size * 2} viewBox="0 0 30 120" fill="none">
+          <svg
+            width={d.size * 0.5}
+            height={d.size * 2}
+            viewBox="0 0 30 120"
+            fill="none"
+          >
             {/* DNA dots - strand A */}
             {Array.from({ length: 8 }, (_, i) => (
               <circle
@@ -313,8 +467,23 @@ function Pharma3DBackground() {
             }}
           >
             <svg width={b.size} height={b.size} viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="9" stroke="#52B788" strokeWidth="1" fill="none" />
-              <circle cx="10" cy="10" r="6" stroke="#40916C" strokeWidth="0.5" fill="none" opacity="0.5" />
+              <circle
+                cx="10"
+                cy="10"
+                r="9"
+                stroke="#52B788"
+                strokeWidth="1"
+                fill="none"
+              />
+              <circle
+                cx="10"
+                cy="10"
+                r="6"
+                stroke="#40916C"
+                strokeWidth="0.5"
+                fill="none"
+                opacity="0.5"
+              />
               <circle cx="7" cy="7" r="2" fill="#2D6A4F" opacity="0.3" />
             </svg>
           </div>
@@ -335,7 +504,7 @@ function LiveClock() {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
-        })
+        }),
       );
     };
     updateTime();
@@ -414,7 +583,9 @@ export default function ComptoirPage() {
             <div className="absolute inset-0 rounded-full bg-pharma-green-light/20 animate-ping" />
             <Spinner size="lg" />
           </div>
-          <p className="text-sm text-pharma-text-secondary">Chargement du comptoir...</p>
+          <p className="text-sm text-pharma-text-secondary">
+            Chargement du comptoir...
+          </p>
         </motion.div>
       </div>
     );
@@ -432,7 +603,7 @@ export default function ComptoirPage() {
       <TopBar profile={profile} title="Comptoir" />
 
       <div
-        className="flex flex-col items-center justify-center px-4 relative z-10"
+        className="flex flex-col items-center justify-center px-4 relative z-10  my-3"
         style={{ minHeight: 'calc(100vh - 64px)' }}
       >
         <motion.div
@@ -447,7 +618,12 @@ export default function ComptoirPage() {
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
+              transition={{
+                type: 'spring',
+                stiffness: 200,
+                damping: 15,
+                delay: 0.1,
+              }}
               className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-pharma-green to-pharma-green-light mb-4 shadow-lg shadow-pharma-green/20"
             >
               <PharmaCross className="w-7 h-7 text-white" />
@@ -495,7 +671,9 @@ export default function ComptoirPage() {
                 <span className="text-xs font-medium text-pharma-text-secondary uppercase tracking-wider">
                   Aujourd&apos;hui
                 </span>
-                <span className="text-xs text-pharma-text-secondary/60">patients</span>
+                <span className="text-xs text-pharma-text-secondary/60">
+                  patients
+                </span>
               </div>
               <div className="w-px h-8 bg-pharma-green/10" />
               <AnimatedCounter value={todayCount} />

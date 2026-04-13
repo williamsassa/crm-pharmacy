@@ -355,8 +355,8 @@ export default function RelancesPage() {
                 Tout est à jour
               </h2>
               <p className="text-sm text-[#6C757D] max-w-sm mx-auto">
-                Aucun patient ne necessite de relance pour le moment. Tous les
-                patients sont suivis régulierement.
+                Aucun patient ne nécessite de relance pour le moment. Tous les
+                patients sont suivis régulièrement.
               </p>
             </div>
           </motion.div>

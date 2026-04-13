@@ -39,6 +39,12 @@ export interface Visite {
   created_at_by: string;
 }
 
+export interface Medicine {
+  id: string;
+  denomination: string;
+  created_at: string;
+}
+
 export interface VisiteWithPatient extends Visite {
   patients: Pick<Patient, 'name' | 'phone' | 'segment_ia'>;
 }

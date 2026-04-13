@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -11,12 +11,16 @@ interface ChatInputProps {
 
 const suggestions = [
   { label: 'Patients chroniques du jour', icon: '🏥' },
-  { label: 'Patients a relancer cette semaine', icon: '📞' },
+  { label: 'Patients à relancer cette semaine', icon: '📞' },
   { label: 'Statistiques de la semaine', icon: '📊' },
-  { label: 'Generer un message de relance', icon: '✉️' },
+  { label: 'Générer un message de relance', icon: '✉️' },
 ];
 
-export default function ChatInput({ onSend, disabled, showSuggestions = false }: ChatInputProps) {
+export default function ChatInput({
+  onSend,
+  disabled,
+  showSuggestions = false,
+}: ChatInputProps) {
   const [input, setInput] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -113,7 +117,16 @@ export default function ChatInput({ onSend, disabled, showSuggestions = false }:
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="12" y1="19" x2="12" y2="5" />
                 <polyline points="5 12 12 5 19 12" />
               </svg>

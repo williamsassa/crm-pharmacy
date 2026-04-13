@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+import { classifyPatient } from '@/lib/ai/classify';
 import { authenticateRequest } from '@/lib/auth';
 import { createServiceRoleClient } from '@/lib/supabase/server';
-import { classifyPatient } from '@/lib/ai/classify';
 import type { VisiteTag } from '@/types';
+import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +27,10 @@ export async function POST(request: Request) {
     };
 
     if (!phone || !motif || !tag) {
-      return NextResponse.json({ error: 'Champs requis manquants (phone, motif, tag)' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Champs requis manquants (phone, motif, tag)' },
+        { status: 400 },
+      );
     }
 
     const supabase = createServiceRoleClient();
@@ -63,23 +66,27 @@ export async function POST(request: Request) {
         .single();
 
       if (insertError || !newPatient) {
-        return NextResponse.json({ error: 'Erreur lors de la creation du patient' }, { status: 500 });
+        return NextResponse.json(
+          { error: 'Erreur lors de la création du patient' },
+          { status: 500 },
+        );
       }
       patientId = newPatient.id;
     }
 
     // Create visite
-    const { error: visiteError } = await supabase
-      .from('visites')
-      .insert({
-        patient_id: patientId,
-        motif,
-        tag,
-        created_at_by: profile.id,
-      });
+    const { error: visiteError } = await supabase.from('visites').insert({
+      patient_id: patientId,
+      motif,
+      tag,
+      created_at_by: profile.id,
+    });
 
     if (visiteError) {
-      return NextResponse.json({ error: 'Erreur lors de la creation de la visite' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Erreur lors de la création de la visite' },
+        { status: 500 },
+      );
     }
 
     // Classify patient asynchronously
@@ -92,7 +99,11 @@ export async function POST(request: Request) {
   }
 }
 
-async function classifyPatientAsync(patientId: string, motif: string, tag: VisiteTag) {
+async function classifyPatientAsync(
+  patientId: string,
+  motif: string,
+  tag: VisiteTag,
+) {
   try {
     const supabase = createServiceRoleClient();
 

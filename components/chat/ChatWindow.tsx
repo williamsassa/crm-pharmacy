@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ChatMessage from './ChatMessage';
-import ChatInput from './ChatInput';
 import { useAuth } from '@/hooks/useAuth';
 import type { ChatMessage as ChatMessageType } from '@/types';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import ChatInput from './ChatInput';
+import ChatMessage from './ChatMessage';
 
 interface ChatWindowProps {
   conversationId: string | null;
@@ -74,7 +74,12 @@ export default function ChatWindow({
 
     const withPlaceholder = [
       ...updatedMessages,
-      { id: assistantId, role: 'assistant' as const, content: '', timestamp: new Date().toISOString() },
+      {
+        id: assistantId,
+        role: 'assistant' as const,
+        content: '',
+        timestamp: new Date().toISOString(),
+      },
     ];
     onMessagesChange(withPlaceholder);
 
@@ -123,8 +128,8 @@ export default function ChatWindow({
                 fullText += parsed.text;
                 onMessagesChange(
                   withPlaceholder.map((m) =>
-                    m.id === assistantId ? { ...m, content: fullText } : m
-                  )
+                    m.id === assistantId ? { ...m, content: fullText } : m,
+                  ),
                 );
               }
             } catch {
@@ -138,9 +143,13 @@ export default function ChatWindow({
         onMessagesChange(
           withPlaceholder.map((m) =>
             m.id === assistantId
-              ? { ...m, content: "Desolee, je n'ai pas pu generer de reponse. Veuillez reessayer." }
-              : m
-          )
+              ? {
+                  ...m,
+                  content:
+                    "Desolee, je n'ai pas pu générer de reponse. Veuillez reessayer.",
+                }
+              : m,
+          ),
         );
       }
     } catch (error) {
@@ -151,8 +160,8 @@ export default function ChatWindow({
                 ...m,
                 content: `Erreur : ${error instanceof Error ? error.message : 'Erreur de communication'}. Veuillez reessayer.`,
               }
-            : m
-        )
+            : m,
+        ),
       );
     } finally {
       setLoading(false);
@@ -177,15 +186,37 @@ export default function ChatWindow({
         <button
           onClick={onToggleSidebar}
           className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-          title={sidebarOpen ? 'Masquer les conversations' : 'Afficher les conversations'}
+          title={
+            sidebarOpen
+              ? 'Masquer les conversations'
+              : 'Afficher les conversations'
+          }
         >
           {sidebarOpen ? (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#2D6A4F"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <rect x="3" y="3" width="18" height="18" rx="2" />
               <line x1="9" y1="3" x2="9" y2="21" />
             </svg>
           ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#2D6A4F"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="18" x2="21" y2="18" />
@@ -195,7 +226,13 @@ export default function ChatWindow({
 
         {/* AI icon */}
         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2D6A4F] to-[#52B788] flex items-center justify-center flex-shrink-0 shadow-sm">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="text-white"
+          >
             <path
               d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
               fill="currentColor"
@@ -252,7 +289,13 @@ export default function ChatWindow({
             >
               {/* AI logo */}
               <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[#2D6A4F] to-[#52B788] flex items-center justify-center shadow-lg">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-white">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="text-white"
+                >
                   <path
                     d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
                     fill="currentColor"
@@ -264,8 +307,8 @@ export default function ChatWindow({
                 Assistant IA Pharmacie
               </h3>
               <p className="text-sm text-gray-500 mb-8 leading-relaxed">
-                Interrogez l&apos;IA sur vos patients, demandez des statistiques,
-                ou generez des messages de relance personnalises.
+                Interrogez l&apos;IA sur vos patients, demandez des
+                statistiques, ou générez des messages de relance personnalisés.
               </p>
 
               {/* Quick action cards */}
@@ -275,7 +318,16 @@ export default function ChatWindow({
                     title: 'Analyse patients',
                     desc: 'Patients chroniques, a risque...',
                     icon: (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#2D6A4F"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                         <circle cx="9" cy="7" r="4" />
                       </svg>
@@ -285,7 +337,16 @@ export default function ChatWindow({
                     title: 'Statistiques',
                     desc: 'Chiffres de la semaine, tendances...',
                     icon: (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#2D6A4F"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <line x1="18" y1="20" x2="18" y2="10" />
                         <line x1="12" y1="20" x2="12" y2="4" />
                         <line x1="6" y1="20" x2="6" y2="14" />
@@ -294,9 +355,18 @@ export default function ChatWindow({
                   },
                   {
                     title: 'Relances',
-                    desc: 'Generer des messages personnalises...',
+                    desc: 'Générer des messages personnalises...',
                     icon: (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#2D6A4F"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                         <polyline points="22,6 12,13 2,6" />
                       </svg>
@@ -306,7 +376,16 @@ export default function ChatWindow({
                     title: 'Aide CRM',
                     desc: "Questions sur l'utilisation...",
                     icon: (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#2D6A4F"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <circle cx="12" cy="12" r="10" />
                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                         <line x1="12" y1="17" x2="12.01" y2="17" />
@@ -323,9 +402,13 @@ export default function ChatWindow({
                       <div className="w-7 h-7 rounded-lg bg-[#2D6A4F]/10 flex items-center justify-center">
                         {card.icon}
                       </div>
-                      <span className="text-sm font-medium text-gray-700">{card.title}</span>
+                      <span className="text-sm font-medium text-gray-700">
+                        {card.title}
+                      </span>
                     </div>
-                    <p className="text-[11px] text-gray-400 ml-9">{card.desc}</p>
+                    <p className="text-[11px] text-gray-400 ml-9">
+                      {card.desc}
+                    </p>
                   </motion.div>
                 ))}
               </div>
@@ -345,38 +428,61 @@ export default function ChatWindow({
             </AnimatePresence>
 
             {/* Typing indicator */}
-            {loading && streamingId && messages.find((m) => m.id === streamingId)?.content === '' && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-3"
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#40916C] to-[#52B788] flex items-center justify-center shadow-sm">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor" />
-                  </svg>
-                </div>
-                <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-md px-4 py-3 shadow-sm">
-                  <div className="flex items-center gap-1.5">
-                    <motion.span
-                      animate={{ opacity: [0.3, 1, 0.3] }}
-                      transition={{ duration: 1.2, repeat: Infinity, delay: 0 }}
-                      className="w-2 h-2 bg-[#2D6A4F] rounded-full"
-                    />
-                    <motion.span
-                      animate={{ opacity: [0.3, 1, 0.3] }}
-                      transition={{ duration: 1.2, repeat: Infinity, delay: 0.2 }}
-                      className="w-2 h-2 bg-[#40916C] rounded-full"
-                    />
-                    <motion.span
-                      animate={{ opacity: [0.3, 1, 0.3] }}
-                      transition={{ duration: 1.2, repeat: Infinity, delay: 0.4 }}
-                      className="w-2 h-2 bg-[#52B788] rounded-full"
-                    />
+            {loading &&
+              streamingId &&
+              messages.find((m) => m.id === streamingId)?.content === '' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-3"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#40916C] to-[#52B788] flex items-center justify-center shadow-sm">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="text-white"
+                    >
+                      <path
+                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                        fill="currentColor"
+                      />
+                    </svg>
                   </div>
-                </div>
-              </motion.div>
-            )}
+                  <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-md px-4 py-3 shadow-sm">
+                    <div className="flex items-center gap-1.5">
+                      <motion.span
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{
+                          duration: 1.2,
+                          repeat: Infinity,
+                          delay: 0,
+                        }}
+                        className="w-2 h-2 bg-[#2D6A4F] rounded-full"
+                      />
+                      <motion.span
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{
+                          duration: 1.2,
+                          repeat: Infinity,
+                          delay: 0.2,
+                        }}
+                        className="w-2 h-2 bg-[#40916C] rounded-full"
+                      />
+                      <motion.span
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{
+                          duration: 1.2,
+                          repeat: Infinity,
+                          delay: 0.4,
+                        }}
+                        className="w-2 h-2 bg-[#52B788] rounded-full"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
 
             <div ref={messagesEndRef} />
           </div>

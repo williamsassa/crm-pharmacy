@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '@/lib/utils';
 import { generateWhatsAppUrl } from '@/lib/whatsapp';
 import type { Patient } from '@/types';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 
 interface PatientsTableProps {
   patients: Patient[];
@@ -14,24 +14,64 @@ interface PatientsTableProps {
 
 const SEGMENTS = [
   { label: 'Tous', value: 'all' },
-  { label: 'Chronique', value: 'Chronique', color: '#2D6A4F', bg: 'rgba(45,106,79,0.08)' },
-  { label: 'Risque', value: 'Risque', color: '#DC2626', bg: 'rgba(220,38,38,0.08)' },
-  { label: 'Suivi regulier', value: 'Suivi régulier', color: '#2563EB', bg: 'rgba(37,99,235,0.08)' },
-  { label: 'Occasionnel', value: 'Occasionnel', color: '#6C757D', bg: 'rgba(108,117,125,0.08)' },
+  {
+    label: 'Chronique',
+    value: 'Chronique',
+    color: '#2D6A4F',
+    bg: 'rgba(45,106,79,0.08)',
+  },
+  {
+    label: 'Risque',
+    value: 'Risque',
+    color: '#DC2626',
+    bg: 'rgba(220,38,38,0.08)',
+  },
+  {
+    label: 'Suivi régulier',
+    value: 'Suivi régulier',
+    color: '#2563EB',
+    bg: 'rgba(37,99,235,0.08)',
+  },
+  {
+    label: 'Occasionnel',
+    value: 'Occasionnel',
+    color: '#6C757D',
+    bg: 'rgba(108,117,125,0.08)',
+  },
 ];
 
 function getSegmentStyle(segment: string | null) {
   switch (segment) {
     case 'Chronique':
-      return { bg: 'rgba(45,106,79,0.1)', text: '#2D6A4F', border: 'rgba(45,106,79,0.2)' };
+      return {
+        bg: 'rgba(45,106,79,0.1)',
+        text: '#2D6A4F',
+        border: 'rgba(45,106,79,0.2)',
+      };
     case 'Risque':
-      return { bg: 'rgba(220,38,38,0.08)', text: '#DC2626', border: 'rgba(220,38,38,0.15)' };
+      return {
+        bg: 'rgba(220,38,38,0.08)',
+        text: '#DC2626',
+        border: 'rgba(220,38,38,0.15)',
+      };
     case 'Suivi régulier':
-      return { bg: 'rgba(37,99,235,0.08)', text: '#2563EB', border: 'rgba(37,99,235,0.15)' };
+      return {
+        bg: 'rgba(37,99,235,0.08)',
+        text: '#2563EB',
+        border: 'rgba(37,99,235,0.15)',
+      };
     case 'Occasionnel':
-      return { bg: 'rgba(108,117,125,0.08)', text: '#6C757D', border: 'rgba(108,117,125,0.15)' };
+      return {
+        bg: 'rgba(108,117,125,0.08)',
+        text: '#6C757D',
+        border: 'rgba(108,117,125,0.15)',
+      };
     default:
-      return { bg: 'rgba(108,117,125,0.06)', text: '#9CA3AF', border: 'rgba(108,117,125,0.1)' };
+      return {
+        bg: 'rgba(108,117,125,0.06)',
+        text: '#9CA3AF',
+        border: 'rgba(108,117,125,0.1)',
+      };
   }
 }
 
@@ -57,7 +97,11 @@ function getAvatarColor(name: string | null) {
   return colors[index];
 }
 
-export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATIMA', onPatientClick }: PatientsTableProps) {
+export default function PatientsTable({
+  patients,
+  pharmacyName = 'Pharmacie FATIMA',
+  onPatientClick,
+}: PatientsTableProps) {
   const [filter, setFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,7 +117,10 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
   });
 
   const totalPages = Math.ceil(filtered.length / perPage);
-  const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
+  const paginated = filtered.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage,
+  );
 
   // Show max 5 page buttons
   const getPageNumbers = () => {
@@ -89,18 +136,25 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
     <div>
       {/* Search bar */}
       <div className="mb-5">
-        <div
-          className="relative max-w-md"
-        >
+        <div className="relative max-w-md">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6C757D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#6C757D"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
           </div>
           <input
             type="text"
-            placeholder="Rechercher par nom ou telephone..."
+            placeholder="Rechercher par nom ou téléphone..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -141,7 +195,9 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                     ? '#2D6A4F'
                     : (seg.color || '#2D6A4F') + '30'
                   : 'rgba(0,0,0,0.06)',
-                boxShadow: isActive ? '0 2px 8px rgba(45, 106, 79, 0.12)' : 'none',
+                boxShadow: isActive
+                  ? '0 2px 8px rgba(45, 106, 79, 0.12)'
+                  : 'none',
               }}
             >
               {seg.label}
@@ -157,21 +213,40 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
         transition={{ duration: 0.4 }}
         className="overflow-hidden rounded-2xl border border-white/20 backdrop-blur-xl"
         style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 100%)',
-          boxShadow: '0 4px 24px rgba(45, 106, 79, 0.06), 0 1px 3px rgba(0,0,0,0.04)',
+          background:
+            'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 100%)',
+          boxShadow:
+            '0 4px 24px rgba(45, 106, 79, 0.06), 0 1px 3px rgba(0,0,0,0.04)',
         }}
       >
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'rgba(45,106,79,0.08)' }}>
-                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">Patient</th>
-                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">Telephone</th>
-                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">Segment IA</th>
-                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">Fidelite</th>
-                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest hidden lg:table-cell">Dernier motif</th>
-                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest hidden md:table-cell">Date</th>
-                <th className="text-right px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">Actions</th>
+              <tr
+                className="border-b"
+                style={{ borderColor: 'rgba(45,106,79,0.08)' }}
+              >
+                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">
+                  Patient
+                </th>
+                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">
+                  Téléphone
+                </th>
+                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">
+                  Segment IA
+                </th>
+                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">
+                  Fidelite
+                </th>
+                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest hidden lg:table-cell">
+                  Dernier motif
+                </th>
+                <th className="text-left px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest hidden md:table-cell">
+                  Date
+                </th>
+                <th className="text-right px-5 py-3.5 text-[10px] font-bold text-[#6C757D] uppercase tracking-widest">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -190,10 +265,14 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                       style={{ borderColor: 'rgba(0,0,0,0.03)' }}
                       onClick={() => onPatientClick?.(patient)}
                       onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLTableRowElement).style.background = 'rgba(45,106,79,0.03)';
+                        (
+                          e.currentTarget as HTMLTableRowElement
+                        ).style.background = 'rgba(45,106,79,0.03)';
                       }}
                       onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLTableRowElement).style.background = 'transparent';
+                        (
+                          e.currentTarget as HTMLTableRowElement
+                        ).style.background = 'transparent';
                       }}
                     >
                       {/* Patient name with avatar */}
@@ -201,7 +280,10 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                         <div className="flex items-center gap-3">
                           <div
                             className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-                            style={{ background: avatarStyle.bg, color: avatarStyle.text }}
+                            style={{
+                              background: avatarStyle.bg,
+                              color: avatarStyle.text,
+                            }}
                           >
                             {getInitials(patient.name)}
                           </div>
@@ -241,15 +323,19 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${patient.score_fidelite}%` }}
-                              transition={{ duration: 0.8, delay: 0.3 + index * 0.05, ease: 'easeOut' }}
+                              transition={{
+                                duration: 0.8,
+                                delay: 0.3 + index * 0.05,
+                                ease: 'easeOut',
+                              }}
                               className="h-full rounded-full"
                               style={{
                                 background: `linear-gradient(90deg, #2D6A4F, ${
                                   patient.score_fidelite > 70
                                     ? '#52B788'
                                     : patient.score_fidelite > 40
-                                    ? '#40916C'
-                                    : '#6C757D'
+                                      ? '#40916C'
+                                      : '#6C757D'
                                 })`,
                               }}
                             />
@@ -273,18 +359,28 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                       {/* WhatsApp action */}
                       <td className="px-5 py-3.5 text-right">
                         <a
-                          href={generateWhatsAppUrl(patient.phone, patient.name || '', pharmacyName)}
+                          href={generateWhatsAppUrl(
+                            patient.phone,
+                            patient.name || '',
+                            pharmacyName,
+                          )}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 hover:scale-110"
                           style={{
-                            background: 'linear-gradient(135deg, #22C55E, #16A34A)',
+                            background:
+                              'linear-gradient(135deg, #22C55E, #16A34A)',
                             boxShadow: '0 2px 8px rgba(34, 197, 94, 0.25)',
                           }}
                           title="Relancer via WhatsApp"
                         >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="#fff"
+                          >
                             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                           </svg>
                         </a>
@@ -304,15 +400,26 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
               className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
               style={{ background: 'rgba(45,106,79,0.08)' }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6C757D" strokeWidth="1.5">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#6C757D"
+                strokeWidth="1.5"
+              >
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
             </div>
-            <p className="text-sm font-medium text-[#6C757D]">Aucun patient trouve</p>
-            <p className="text-xs text-[#9CA3AF] mt-1">Essayez de modifier vos filtres</p>
+            <p className="text-sm font-medium text-[#6C757D]">
+              Aucun patient trouvé
+            </p>
+            <p className="text-xs text-[#9CA3AF] mt-1">
+              Essayez de modifier vos filtres
+            </p>
           </div>
         )}
       </motion.div>
@@ -326,7 +433,8 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
           className="flex items-center justify-between mt-5"
         >
           <p className="text-sm text-[#6C757D] font-medium">
-            <span className="font-bold text-[#1A1A2E]">{filtered.length}</span> patient{filtered.length > 1 ? 's' : ''}
+            <span className="font-bold text-[#1A1A2E]">{filtered.length}</span>{' '}
+            patient{filtered.length > 1 ? 's' : ''}
           </p>
           <div className="flex gap-1.5">
             <button
@@ -338,7 +446,14 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                 border: '1px solid rgba(0,0,0,0.06)',
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
@@ -355,7 +470,10 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                       ? 'linear-gradient(135deg, #2D6A4F, #40916C)'
                       : 'rgba(255,255,255,0.8)',
                   color: currentPage === page ? '#fff' : '#6C757D',
-                  border: currentPage === page ? 'none' : '1px solid rgba(0,0,0,0.06)',
+                  border:
+                    currentPage === page
+                      ? 'none'
+                      : '1px solid rgba(0,0,0,0.06)',
                   boxShadow:
                     currentPage === page
                       ? '0 2px 8px rgba(45, 106, 79, 0.25)'
@@ -366,7 +484,9 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
               </motion.button>
             ))}
             <button
-              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              onClick={() =>
+                setCurrentPage(Math.min(totalPages, currentPage + 1))
+              }
               disabled={currentPage === totalPages}
               className="flex items-center justify-center w-9 h-9 rounded-xl text-sm font-medium transition-all duration-200 disabled:opacity-30"
               style={{
@@ -374,7 +494,14 @@ export default function PatientsTable({ patients, pharmacyName = 'Pharmacie FATI
                 border: '1px solid rgba(0,0,0,0.06)',
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </button>

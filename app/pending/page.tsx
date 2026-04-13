@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
+import { motion } from 'framer-motion';
 
 export default function PendingPage() {
   const { logout } = useAuth();
@@ -18,10 +18,14 @@ export default function PendingPage() {
         <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-white/3 rounded-full blur-2xl" />
 
         {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }} />
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, white 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
+          }}
+        />
       </div>
 
       {/* Card */}
@@ -35,12 +39,25 @@ export default function PendingPage() {
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
-          transition={{ delay: 0.2, duration: 0.5, type: 'spring', stiffness: 200 }}
+          transition={{
+            delay: 0.2,
+            duration: 0.5,
+            type: 'spring',
+            stiffness: 200,
+          }}
           className="mx-auto mb-6"
         >
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-50 flex items-center justify-center mx-auto border border-orange-100">
             <div className="animate-hourglass">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E76F51" strokeWidth="2" strokeLinecap="round">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#E76F51"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
@@ -53,10 +70,13 @@ export default function PendingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.4 }}
         >
-          <h1 className="text-2xl font-bold text-pharma-text mb-2">Demande en attente</h1>
+          <h1 className="text-2xl font-bold text-pharma-text mb-2">
+            Demande en attente
+          </h1>
           <p className="text-sm text-pharma-text-secondary leading-relaxed mb-6">
-            Votre demande d&apos;acces administrateur est en cours de validation par le super-administrateur.
-            Vous recevrez une notification des que votre compte sera active.
+            Votre demande d&apos;acces administrateur est en cours de validation
+            par le super-administrateur. Vous recevrez une notification des que
+            votre compte sera active.
           </p>
         </motion.div>
 
@@ -68,13 +88,23 @@ export default function PendingPage() {
         >
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-pharma-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2D6A4F"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12.01" y2="8" />
               </svg>
             </div>
             <p className="text-xs text-pharma-text-secondary text-left leading-relaxed">
-              Le super-administrateur examine les nouvelles demandes regulierement.
-              Si votre demande n&apos;est pas traitee sous 24h, contactez votre pharmacie.
+              Le super-administrateur examine les nouvelles demandes
+              régulierement. Si votre demande n&apos;est pas traitee sous 24h,
+              contactez votre pharmacie.
             </p>
           </div>
         </motion.div>
@@ -91,7 +121,15 @@ export default function PendingPage() {
             onClick={() => window.location.reload()}
             className="w-full flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-pharma-green to-pharma-green-medium text-white text-sm font-semibold shadow-md hover:shadow-lg hover:shadow-pharma-green/25 transition-all duration-200"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
               <polyline points="23 4 23 10 17 10" />
               <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
             </svg>
@@ -102,7 +140,14 @@ export default function PendingPage() {
             onClick={logout}
             className="w-full flex items-center justify-center gap-2 h-11 text-sm font-medium text-pharma-text-secondary hover:text-red-600 transition-colors duration-200"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" y1="12" x2="9" y2="12" />

@@ -1,4 +1,10 @@
-import { initializeApp, getApps, cert, type App, type ServiceAccount } from 'firebase-admin/app';
+import {
+  cert,
+  getApps,
+  initializeApp,
+  type App,
+  type ServiceAccount,
+} from 'firebase-admin/app';
 import { getAuth, type Auth } from 'firebase-admin/auth';
 
 let adminApp: App | null = null;
@@ -16,7 +22,7 @@ function getAdminAuth(): Auth {
 
     if (!projectId || !clientEmail || !privateKey) {
       throw new Error(
-        'Firebase Admin SDK credentials missing. Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY.'
+        'Firebase Admin SDK credentials missing. Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY.',
       );
     }
 

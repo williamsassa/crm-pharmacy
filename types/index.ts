@@ -1,7 +1,11 @@
 export type UserRole = 'superadmin' | 'admin' | 'assistant';
 export type UserStatus = 'active' | 'pending' | 'rejected';
-export type PatientSegment = 'Chronique' | 'Risque' | 'Suivi régulier' | 'Occasionnel';
-export type VisiteTag = 'Chronique' | 'Aigu' | 'Suivi';
+export type PatientSegment =
+  | 'Chronique'
+  | 'Risque'
+  | 'Suivi régulier'
+  | 'Occasionnel';
+export type VisiteTag = 'Chronique' | 'Conseil' | 'Demande' | 'Ordonnance';
 
 export interface Profile {
   id: string;

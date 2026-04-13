@@ -37,7 +37,9 @@ export function formatDateTime(date: string): string {
 }
 
 export function daysSince(date: string): number {
-  return Math.floor((Date.now() - new Date(date).getTime()) / (1000 * 60 * 60 * 24));
+  return Math.floor(
+    (Date.now() - new Date(date).getTime()) / (1000 * 60 * 60 * 24),
+  );
 }
 
 export function getSegmentColor(segment: string | null): string {
@@ -59,9 +61,11 @@ export function getTagColor(tag: string): { bg: string; text: string } {
   switch (tag) {
     case 'Chronique':
       return { bg: '#2D6A4F', text: '#FFFFFF' };
-    case 'Aigu':
+    case 'Conseil':
+      return { bg: '#FBAE3C', text: '#FFFFFF' };
+    case 'Demande':
       return { bg: '#E76F51', text: '#FFFFFF' };
-    case 'Suivi':
+    case 'Ordonnance':
       return { bg: '#1B4F72', text: '#FFFFFF' };
     default:
       return { bg: '#6C757D', text: '#FFFFFF' };

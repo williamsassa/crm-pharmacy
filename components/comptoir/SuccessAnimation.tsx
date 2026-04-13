@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
 
 interface SuccessAnimationProps {
   patientName?: string;
@@ -30,11 +30,7 @@ function SuccessParticle({ index, total }: { index: number; total: number }) {
         width: size,
         height: size,
         background:
-          index % 3 === 0
-            ? '#52B788'
-            : index % 3 === 1
-            ? '#2D6A4F'
-            : '#40916C',
+          index % 3 === 0 ? '#52B788' : index % 3 === 1 ? '#2D6A4F' : '#40916C',
         left: '50%',
         top: '50%',
         marginLeft: -size / 2,
@@ -131,7 +127,8 @@ export default function SuccessAnimation({
           }}
           className="relative w-28 h-28 rounded-full flex items-center justify-center shadow-xl"
           style={{
-            background: 'linear-gradient(135deg, #2D6A4F 0%, #40916C 50%, #52B788 100%)',
+            background:
+              'linear-gradient(135deg, #2D6A4F 0%, #40916C 50%, #52B788 100%)',
             boxShadow: '0 10px 40px rgba(45, 106, 79, 0.3)',
           }}
         >
@@ -153,7 +150,11 @@ export default function SuccessAnimation({
               d="M20 6L9 17l-5-5"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ delay: 0.35, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                delay: 0.35,
+                duration: 0.45,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             />
           </motion.svg>
         </motion.div>
@@ -177,8 +178,10 @@ export default function SuccessAnimation({
           transition={{ delay: 0.55, duration: 0.3 }}
           className="text-base text-pharma-text-secondary mb-6"
         >
-          <span className="font-medium text-pharma-green-medium">{patientName}</span>
-          {' '}a ete enregistre
+          <span className="font-medium text-pharma-green-medium">
+            {patientName}
+          </span>{' '}
+          a ete enregistré
         </motion.p>
       )}
 

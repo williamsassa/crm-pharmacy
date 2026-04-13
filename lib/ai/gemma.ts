@@ -64,7 +64,7 @@ interface ChatMessage {
 
 function buildMessages(
   systemPrompt: string,
-  messages: { role: 'user' | 'model'; content: string }[]
+  messages: { role: 'user' | 'model'; content: string }[],
 ): ChatMessage[] {
   return [
     { role: 'system', content: systemPrompt },
@@ -86,7 +86,7 @@ export async function callGemma(
     temperature?: number;
     maxTokens?: number;
     jsonMode?: boolean;
-  }
+  },
 ): Promise<string> {
   const useOllama = await shouldUseOllama();
 
@@ -103,7 +103,7 @@ async function callGemmaOllama(
     temperature?: number;
     maxTokens?: number;
     jsonMode?: boolean;
-  }
+  },
 ): Promise<string> {
   console.log(`[AI] Using Ollama (local) — model: ${OLLAMA_MODEL}`);
 
@@ -146,13 +146,13 @@ async function callGemmaOpenRouter(
     temperature?: number;
     maxTokens?: number;
     jsonMode?: boolean;
-  }
+  },
 ): Promise<string> {
   console.log(`[AI] Using OpenRouter (cloud) — model: ${OPENROUTER_MODEL}`);
 
   if (!OPENROUTER_API_KEY) {
     throw new Error(
-      'OpenRouter API key not configured. Set OPENROUTER_API_KEY environment variable.'
+      'OpenRouter API key not configured. Set OPENROUTER_API_KEY environment variable.',
     );
   }
 
@@ -195,7 +195,7 @@ async function callGemmaOpenRouter(
 export async function streamGemma(
   systemPrompt: string,
   messages: { role: 'user' | 'model'; content: string }[],
-  options?: { temperature?: number; maxTokens?: number }
+  options?: { temperature?: number; maxTokens?: number },
 ): Promise<ReadableStream<Uint8Array>> {
   const useOllama = await shouldUseOllama();
 
@@ -208,7 +208,7 @@ export async function streamGemma(
 async function streamGemmaOllama(
   systemPrompt: string,
   messages: { role: 'user' | 'model'; content: string }[],
-  options?: { temperature?: number; maxTokens?: number }
+  options?: { temperature?: number; maxTokens?: number },
 ): Promise<ReadableStream<Uint8Array>> {
   console.log(`[AI] Using Ollama (local) streaming — model: ${OLLAMA_MODEL}`);
 
@@ -231,7 +231,9 @@ async function streamGemmaOllama(
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Ollama streaming error (${response.status}): ${errorText}`);
+    throw new Error(
+      `Ollama streaming error (${response.status}): ${errorText}`,
+    );
   }
 
   const reader = response.body!.getReader();
@@ -259,7 +261,9 @@ async function streamGemmaOllama(
             }
             const text = parsed.message?.content;
             if (text) {
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text })}\n\n`));
+              controller.enqueue(
+                encoder.encode(`data: ${JSON.stringify({ text })}\n\n`),
+              );
             }
           } catch {
             // Skip malformed JSON lines
@@ -278,13 +282,15 @@ async function streamGemmaOllama(
 async function streamGemmaOpenRouter(
   systemPrompt: string,
   messages: { role: 'user' | 'model'; content: string }[],
-  options?: { temperature?: number; maxTokens?: number }
+  options?: { temperature?: number; maxTokens?: number },
 ): Promise<ReadableStream<Uint8Array>> {
-  console.log(`[AI] Using OpenRouter (cloud) streaming — model: ${OPENROUTER_MODEL}`);
+  console.log(
+    `[AI] Using OpenRouter (cloud) streaming — model: ${OPENROUTER_MODEL}`,
+  );
 
   if (!OPENROUTER_API_KEY) {
     throw new Error(
-      'OpenRouter API key not configured. Set OPENROUTER_API_KEY environment variable.'
+      'OpenRouter API key not configured. Set OPENROUTER_API_KEY environment variable.',
     );
   }
 
@@ -308,7 +314,9 @@ async function streamGemmaOpenRouter(
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`OpenRouter streaming error (${response.status}): ${errorText}`);
+    throw new Error(
+      `OpenRouter streaming error (${response.status}): ${errorText}`,
+    );
   }
 
   const reader = response.body!.getReader();
@@ -342,7 +350,9 @@ async function streamGemmaOpenRouter(
             const parsed = JSON.parse(jsonStr);
             const text = parsed.choices?.[0]?.delta?.content;
             if (text) {
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text })}\n\n`));
+              controller.enqueue(
+                encoder.encode(`data: ${JSON.stringify({ text })}\n\n`),
+              );
             }
           } catch {
             // Skip malformed JSON lines

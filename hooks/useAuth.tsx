@@ -1,10 +1,17 @@
 'use client';
 
-import { useState, useEffect, useCallback, createContext, useContext, type ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { getFirebaseAuth } from '@/lib/firebase/client';
 import type { Profile } from '@/types';
+import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
 
 interface AuthContextType {
   user: User | null;
@@ -57,30 +64,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const firebaseAuth = getFirebaseAuth();
-    const unsubscribe = onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        await loadProfile(firebaseUser);
-      } else {
-        setProfile(null);
-        setToken(null);
-      }
-      setLoading(false);
-    });
+    const unsubscribe = onAuthStateChanged(
+      firebaseAuth,
+      async (firebaseUser) => {
+        setUser(firebaseUser);
+        if (firebaseUser) {
+          await loadProfile(firebaseUser);
+        } else {
+          setProfile(null);
+          setToken(null);
+        }
+        setLoading(false);
+      },
+    );
     return () => unsubscribe();
   }, [loadProfile]);
 
   // Auto-refresh token every 50 minutes (Firebase tokens expire after 60 min)
   useEffect(() => {
     if (!user) return;
-    const interval = setInterval(async () => {
-      try {
-        const freshToken = await user.getIdToken(true);
-        setToken(freshToken);
-      } catch (e) {
-        console.error('Token refresh failed:', e);
-      }
-    }, 50 * 60 * 1000);
+    const interval = setInterval(
+      async () => {
+        try {
+          const freshToken = await user.getIdToken(true);
+          setToken(freshToken);
+        } catch (e) {
+          console.error('Token refresh failed:', e);
+        }
+      },
+      50 * 60 * 1000,
+    );
     return () => clearInterval(interval);
   }, [user]);
 
@@ -113,7 +126,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user, token]);
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, token, logout, refreshProfile, getFreshToken }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        profile,
+        loading,
+        token,
+        logout,
+        refreshProfile,
+        getFreshToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

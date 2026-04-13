@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import type { Profile } from '@/types';
+import { useEffect, useState } from 'react';
 
 interface TopBarProps {
   profile: Profile;
@@ -28,7 +28,7 @@ export default function TopBar({ profile, title, onMenuToggle }: TopBarProps) {
         new Date().toLocaleTimeString('fr-FR', {
           hour: '2-digit',
           minute: '2-digit',
-        })
+        }),
       );
     };
     updateTime();
@@ -48,7 +48,15 @@ export default function TopBar({ profile, title, onMenuToggle }: TopBarProps) {
             className="p-2 -ml-2 text-pharma-text-secondary hover:text-pharma-green hover:bg-pharma-green/5 rounded-xl transition-colors"
             aria-label="Menu"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="18" x2="21" y2="18" />
@@ -66,7 +74,15 @@ export default function TopBar({ profile, title, onMenuToggle }: TopBarProps) {
         {/* Time display */}
         {currentTime && (
           <div className="hidden sm:flex items-center gap-1.5 text-sm text-pharma-text-secondary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
@@ -96,9 +112,16 @@ export default function TopBar({ profile, title, onMenuToggle }: TopBarProps) {
         <button
           onClick={logout}
           className="p-2 text-pharma-text-secondary hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
-          title="Deconnexion"
+          title="Déconnexion"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
             <polyline points="16 17 21 12 16 7" />
             <line x1="21" y1="12" x2="9" y2="12" />

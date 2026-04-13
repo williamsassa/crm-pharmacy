@@ -1,14 +1,14 @@
-// Dual-provider AI: Ollama (local) with OpenRouter (cloud) fallback
+// Dual-provider AI: Ollama (local) with Nvidia (cloud) fallback
 
 // --- Ollama config ---
 const OLLAMA_BASE_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.2:3b';
 
-// --- OpenRouter config ---
-const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
-const OPENROUTER_MODEL =
-  process.env.OPENROUTER_MODEL || 'google/gemma-4-26b-a4b-it:free';
+// --- Nvidia config ---
+const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
+const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY || '';
+const NVIDIA_MODEL =
+  process.env.NVIDIA_MODEL || 'meta/llama3-70b-instruct';
 
 // --- Ollama availability cache ---
 let ollamaAvailableCache: { value: boolean; timestamp: number } | null = null;
@@ -52,7 +52,7 @@ async function shouldUseOllama(): Promise<boolean> {
     return isOllamaAvailable();
   }
 
-  // In production without explicit OLLAMA_URL, use OpenRouter
+  // In production without explicit OLLAMA_URL, use Nvidia
   return false;
 }
 
@@ -93,7 +93,7 @@ export async function callGemma(
   if (useOllama) {
     return callGemmaOllama(systemPrompt, messages, options);
   }
-  return callGemmaOpenRouter(systemPrompt, messages, options);
+  return callGemmaNvidia(systemPrompt, messages, options);
 }
 
 async function callGemmaOllama(
@@ -139,7 +139,7 @@ async function callGemmaOllama(
   return data.message?.content || '';
 }
 
-async function callGemmaOpenRouter(
+async function callGemmaNvidia(
   systemPrompt: string,
   messages: { role: 'user' | 'model'; content: string }[],
   options?: {
@@ -148,40 +148,36 @@ async function callGemmaOpenRouter(
     jsonMode?: boolean;
   },
 ): Promise<string> {
-  console.log(`[AI] Using OpenRouter (cloud) — model: ${OPENROUTER_MODEL}`);
+  console.log(`[AI] Using Nvidia (cloud) — model: ${NVIDIA_MODEL}`);
 
-  if (!OPENROUTER_API_KEY) {
+  if (!NVIDIA_API_KEY) {
     throw new Error(
-      'OpenRouter API key not configured. Set OPENROUTER_API_KEY environment variable.',
+      'Nvidia API key not configured. Set NVIDIA_API_KEY environment variable.',
     );
   }
 
   const chatMessages = buildMessages(systemPrompt, messages);
 
   const body: Record<string, unknown> = {
-    model: OPENROUTER_MODEL,
+    model: NVIDIA_MODEL,
     messages: chatMessages,
     temperature: options?.temperature ?? 0.7,
     top_p: 0.95,
     max_tokens: options?.maxTokens ?? 2048,
   };
 
-  if (options?.jsonMode) {
-    body.response_format = { type: 'json_object' };
-  }
-
-  const response = await fetch(OPENROUTER_API_URL, {
+  const response = await fetch(NVIDIA_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+      Authorization: `Bearer ${NVIDIA_API_KEY}`,
     },
     body: JSON.stringify(body),
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`OpenRouter error (${response.status}): ${errorText}`);
+    throw new Error(`Nvidia error (${response.status}): ${errorText}`);
   }
 
   const data = await response.json();
@@ -202,7 +198,7 @@ export async function streamGemma(
   if (useOllama) {
     return streamGemmaOllama(systemPrompt, messages, options);
   }
-  return streamGemmaOpenRouter(systemPrompt, messages, options);
+  return streamGemmaNvidia(systemPrompt, messages, options);
 }
 
 async function streamGemmaOllama(
@@ -279,31 +275,31 @@ async function streamGemmaOllama(
   });
 }
 
-async function streamGemmaOpenRouter(
+async function streamGemmaNvidia(
   systemPrompt: string,
   messages: { role: 'user' | 'model'; content: string }[],
   options?: { temperature?: number; maxTokens?: number },
 ): Promise<ReadableStream<Uint8Array>> {
   console.log(
-    `[AI] Using OpenRouter (cloud) streaming — model: ${OPENROUTER_MODEL}`,
+    `[AI] Using Nvidia (cloud) streaming — model: ${NVIDIA_MODEL}`,
   );
 
-  if (!OPENROUTER_API_KEY) {
+  if (!NVIDIA_API_KEY) {
     throw new Error(
-      'OpenRouter API key not configured. Set OPENROUTER_API_KEY environment variable.',
+      'Nvidia API key not configured. Set NVIDIA_API_KEY environment variable.',
     );
   }
 
   const chatMessages = buildMessages(systemPrompt, messages);
 
-  const response = await fetch(OPENROUTER_API_URL, {
+  const response = await fetch(NVIDIA_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+      Authorization: `Bearer ${NVIDIA_API_KEY}`,
     },
     body: JSON.stringify({
-      model: OPENROUTER_MODEL,
+      model: NVIDIA_MODEL,
       messages: chatMessages,
       stream: true,
       temperature: options?.temperature ?? 0.7,
@@ -315,7 +311,7 @@ async function streamGemmaOpenRouter(
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(
-      `OpenRouter streaming error (${response.status}): ${errorText}`,
+      `Nvidia streaming error (${response.status}): ${errorText}`,
     );
   }
 
@@ -336,7 +332,7 @@ async function streamGemmaOpenRouter(
         const lines = chunk.split('\n').filter((l) => l.trim());
 
         for (const line of lines) {
-          // OpenRouter uses SSE format: "data: {json}"
+          // Nvidia uses SSE format: "data: {json}"
           const dataPrefix = 'data: ';
           if (!line.startsWith(dataPrefix)) continue;
 

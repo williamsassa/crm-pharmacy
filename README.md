@@ -13,7 +13,7 @@ Built as **CRM Pharmacie FATIMA**, this system enables pharmacy counter staff to
 | Frontend       | Next.js 14 (App Router, TypeScript)                            |
 | Authentication | Firebase Auth (Google OAuth + Phone OTP)                       |
 | Database       | Supabase (PostgreSQL)                                          |
-| AI             | Ollama (local) / OpenRouter (cloud) -- Gemma, Llama, Mistral   |
+| AI             | Ollama (local) / Nvidia (cloud) -- Llama, Mistral             |
 | UI             | Tailwind CSS, Framer Motion, Recharts                          |
 | 3D Background  | Three.js (animated pharmacy-themed scene)                      |
 | Deployment     | Vercel (frontend + API) + Supabase (database)                  |
@@ -64,7 +64,7 @@ crm-pharmacie/
 |-- lib/
 |   |-- firebase/                 # Firebase Client SDK + Admin SDK config
 |   |-- supabase/                 # Supabase client (service role)
-|   |-- ai/                       # AI provider abstraction (Ollama / OpenRouter)
+|   |-- ai/                       # AI provider abstraction (Ollama / Nvidia)
 |   |-- auth.ts                   # API-side token verification helper
 |   |-- whatsapp.ts               # WhatsApp deep-link URL builder
 |   +-- utils.ts                  # General utilities
@@ -86,7 +86,7 @@ crm-pharmacie/
 - Node.js 18 or later
 - A Firebase project with Authentication enabled (Google and Phone providers)
 - A Supabase project with PostgreSQL
-- Ollama installed locally (for local AI) or an OpenRouter API key (for cloud AI)
+- Ollama installed locally (for local AI) or a Nvidia API key (for cloud AI)
 
 ### Installation
 
@@ -134,8 +134,7 @@ FIREBASE_PRIVATE_KEY=             # Private key from Firebase Admin SDK JSON (ke
 # ------------------------------------------------------------------
 # AI Provider
 # ------------------------------------------------------------------
-GOOGLE_AI_API_KEY=                # Google AI Studio API key (for Gemma models)
-OPENROUTER_API_KEY=               # OpenRouter API key (optional, cloud AI fallback)
+NVIDIA_API_KEY=                   # Nvidia API key (cloud AI)
 
 # ------------------------------------------------------------------
 # Application
@@ -173,13 +172,9 @@ ollama pull llama3.2:3b
 
 The application automatically detects Ollama running at `localhost:11434` and uses it as the primary AI provider.
 
-#### Cloud (OpenRouter)
+#### Cloud (Nvidia)
 
-Set the `OPENROUTER_API_KEY` variable in `.env.local`. The application falls back to OpenRouter when Ollama is not available. OpenRouter supports a wide range of models including Llama, Mistral, and Gemma variants.
-
-#### Google AI Studio (Gemma)
-
-Alternatively, set `GOOGLE_AI_API_KEY` to use Google AI Studio directly for Gemma model access.
+Set the `NVIDIA_API_KEY` variable in `.env.local`. The application falls back to Nvidia when Ollama is not available. Nvidia supports a wide range of models including Llama and Mistral variants.
 
 ## Roles and Access Control
 

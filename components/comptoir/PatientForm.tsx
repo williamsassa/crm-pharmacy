@@ -114,8 +114,10 @@ const TAG_OPTIONS: {
 
 export default function PatientForm({ onSuccess }: PatientFormProps) {
   const [phone, setPhone] = useState('');
+  const [isWhatsapp, setIsWhatsapp] = useState(false);
   const [name, setName] = useState('');
   const [motif, setMotif] = useState('');
+  const [medicament, setMedicament] = useState('');
   const [tag, setTag] = useState<VisiteTag | null>(null);
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -150,8 +152,10 @@ export default function PatientForm({ onSuccess }: PatientFormProps) {
           if (data.patient) {
             setExistingPatient(data.patient.name);
             setName(data.patient.name || '');
+            setIsWhatsapp(!!data.patient.is_whatsapp);
           } else {
             setExistingPatient(null);
+            setIsWhatsapp(false);
           }
         }
       } catch {
@@ -184,7 +188,14 @@ export default function PatientForm({ onSuccess }: PatientFormProps) {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ phone, name, motif, tag }),
+        body: JSON.stringify({
+          phone,
+          name,
+          motif,
+          medicament,
+          tag,
+          is_whatsapp: isWhatsapp,
+        }),
       });
 
       if (!res.ok) {
@@ -199,9 +210,11 @@ export default function PatientForm({ onSuccess }: PatientFormProps) {
         setSuccessName('');
         setPhone('');
         setName('');
+        setMedicament('');
         setMotif('');
         setTag(null);
         setExistingPatient(null);
+        setIsWhatsapp(false);
         phoneRef.current?.focus();
         onSuccess?.();
       }, 2500);
@@ -296,6 +309,36 @@ export default function PatientForm({ onSuccess }: PatientFormProps) {
             </motion.div>
           )}
         </AnimatePresence>
+        {/* WhatsApp Checkbox */}
+        <div className="flex items-center gap-2 mt-3 select-none">
+          <input
+            id="is-whatsapp"
+            type="checkbox"
+            checked={isWhatsapp}
+            onChange={(e) => setIsWhatsapp(e.target.checked)}
+            className="accent-green-500 h-4 w-4 rounded border-gray-300 focus:ring-0"
+          />
+          <label
+            htmlFor="is-whatsapp"
+            className="text-sm font-medium text-pharma-text flex items-center gap-1 cursor-pointer"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 32 32"
+              fill="none"
+              className="inline-block text-green-500"
+            >
+              <circle cx="16" cy="16" r="16" fill="#25D366" />
+              <path
+                d="M23.53 19.53c-.34-.17-2.01-.99-2.32-1.11-.31-.12-.53-.17-.75.17s-.86 1.11-1.05 1.33c-.19.22-.39.25-.73.08-.34-.17-1.45-.54-2.75-1.71-1.02-.91-1.71-2.04-1.9-2.39-.2-.34-.02-.52.15-.69.16-.16.34-.39.51-.58.17-.19.22-.34.34-.56.11-.22.06-.42-.03-.59-.09-.17-.75-1.8-1.04-2.48-.27-.64-.54-.56-.75-.57-.19-.01-.41-.01-.64-.01-.22 0-.58.08-.89.41-.31.34-1.18 1.16-1.18 2.82s1.21 3.27 1.38 3.5c.17.22 2.22 3.43 5.55 4.68.77.27 1.36.43 1.83.55.77.19 1.47.16 2.03.09.62-.07 1.91-.78 2.18-1.54.27-.75.27-1.39.19-1.52-.07-.13-.27-.21-.56-.34z"
+                fill="#fff"
+              />
+            </svg>
+            Numéro WhatsApp
+          </label>
+        </div>
+        {/* End WhatsApp Checkbox */}
       </motion.div>
 
       {/* Name Input */}
@@ -325,6 +368,24 @@ export default function PatientForm({ onSuccess }: PatientFormProps) {
           value={motif}
           onChange={(e) => {
             setMotif(e.target.value);
+            setError('');
+          }}
+          className="focus:border-pharma-green transition-all duration-300"
+        />
+      </motion.div>
+
+      {/* Médicament Input */}
+      <motion.div
+        initial={{ opacity: 0, x: -15 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <Input
+          label="Médicament"
+          placeholder="Ex: Paracétamol, Bledina"
+          value={medicament}
+          onChange={(e) => {
+            setMedicament(e.target.value);
             setError('');
           }}
           className="focus:border-pharma-green transition-all duration-300"
@@ -459,7 +520,7 @@ export default function PatientForm({ onSuccess }: PatientFormProps) {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                 />
               </svg>
-              <span>Enregistrément...</span>
+              <span>Enregistrement...</span>
             </motion.div>
           ) : (
             <span className="flex items-center justify-center gap-2">

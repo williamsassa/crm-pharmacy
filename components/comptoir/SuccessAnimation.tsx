@@ -167,7 +167,7 @@ export default function SuccessAnimation({
         transition={{ delay: 0.45, duration: 0.35 }}
         className="text-2xl font-bold text-pharma-green mb-1"
       >
-        Enregistrement reussi
+        Enregistrement réussi
       </motion.p>
 
       {/* Patient name */}
@@ -181,7 +181,7 @@ export default function SuccessAnimation({
           <span className="font-medium text-pharma-green-medium">
             {patientName}
           </span>{' '}
-          a ete enregistré
+          a été enregistré
         </motion.p>
       )}
 

@@ -19,10 +19,12 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { phone, name, motif, tag } = body as {
+    const { phone, is_whatsapp, name, motif, medicament, tag } = body as {
       phone: string;
       name?: string;
       motif: string;
+      medicament?: string;
+      is_whatsapp?: boolean;
       tag: VisiteTag;
     };
 
@@ -58,6 +60,7 @@ export async function POST(request: Request) {
         .from('patients')
         .insert({
           phone,
+          is_whatsapp,
           name: name || null,
           motif_last_visit: motif,
           pharmacy_id: profile.id,
@@ -78,6 +81,7 @@ export async function POST(request: Request) {
     const { error: visiteError } = await supabase.from('visites').insert({
       patient_id: patientId,
       motif,
+      medicament,
       tag,
       created_at_by: profile.id,
     });

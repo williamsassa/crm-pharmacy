@@ -20,6 +20,7 @@ export interface Profile {
 export interface Patient {
   id: string;
   phone: string;
+  is_whatsapp: boolean;
   name: string | null;
   segment_ia: PatientSegment | null;
   motif_last_visit: string | null;
@@ -33,7 +34,7 @@ export interface Visite {
   patient_id: string;
   date: string;
   motif: string;
-  type_achat: string | null;
+  medicament: string | null;
   tag: VisiteTag | null;
   created_at_by: string;
 }
